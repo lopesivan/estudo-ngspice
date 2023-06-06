@@ -1,0 +1,42 @@
+* Definição do modelo do transistor
+.model NPN NPN(IS=2E-14 BF=100 VAF=100 IKF=0.03)
+
+* Configuração do amplificador de base comum
+Q1 NPN 0 IN 1
+R1 IN B 1k
+RC C 0 2k
+RE E 0 500
+VCC C 0 10
+
+* Valores das correntes de emissor
+.param IE1=1m
+.param IE2=2m
+.param IE3=3m
+.param IE4=4m
+.param IE5=5m
+
+* Análise DC para cada corrente de emissor
+.dc Vc 0 5 0.01
+
+* Registros de saída
+.save Vc#branch
+
+* Configuração das correntes de emissor
+.control
+alter Q1.ie = {IE1}
+run
+alter Q1.ie = {IE2}
+run
+alter Q1.ie = {IE3}
+run
+alter Q1.ie = {IE4}
+run
+alter Q1.ie = {IE5}
+run
+
+* Comando de plotagem
+plot Vc#branch vs Vc
+
+.endc
+
+.end
