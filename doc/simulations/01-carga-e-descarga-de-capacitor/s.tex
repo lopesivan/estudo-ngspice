@@ -1,0 +1,42 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{Cálculo do Tempo de Carga de um Capacitor em um Circuito RC}
+
+A constante de tempo $\tau$ para um circuito RC é dada pelo produto da resistência ($R$) e da capacitância ($C$). A fórmula para calcular a constante de tempo é:
+\[
+\tau = R \times C
+\]
+onde $R$ é a resistência e $C$ é a capacitância do capacitor.
+
+\subsection*{Dados do Problema}
+\begin{itemize}
+    \item Resistência, $R = 1.2 \, \text{M}\Omega = 1.2 \times 10^6 \, \Omega$
+    \item Capacitância, $C = 20 \, \mu\text{F} = 20 \times 10^{-6} \, \text{F}$
+    \item Tensão inicial, $V_0 = 25 \, \text{V}$
+\end{itemize}
+
+\subsection*{Cálculo da Constante de Tempo}
+Substituindo os valores fornecidos na fórmula, temos:
+\[
+\tau = (1.2 \times 10^6 \, \Omega) \times (20 \times 10^{-6} \, \text{F}) = 24 \, \text{s}
+\]
+
+\subsection*{Tempo de Carga}
+O tempo necessário para que o capacitor carregue até um certo percentual da tensão de alimentação pode ser estimado utilizando múltiplos da constante de tempo $\tau$. Para carregar até aproximadamente:
+\begin{itemize}
+    \item 95\% da tensão máxima: $t \approx 3\tau$
+    \item 99\% da tensão máxima: $t \approx 5\tau$
+\end{itemize}
+
+\subsubsection*{Cálculos para Percentuais Específicos}
+\begin{align*}
+t_{95\%} &\approx 3 \times 24 \, \text{s} = 72 \, \text{s} \\
+t_{99\%} &\approx 5 \times 24 \, \text{s} = 120 \, \text{s}
+\end{align*}
+
+Estes tempos fornecem uma estimativa de quanto tempo o capacitor no circuito RC levará para alcançar 95\% e 99\% da tensão de carga total, respectivamente.
+
+\end{document}
