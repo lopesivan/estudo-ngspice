@@ -1,0 +1,520 @@
+No ngspice, o comando `let` é utilizado para definir
+variáveis e realizar operações matemáticas com elas. Vamos
+analisar cada comando e a saída associada para entender
+como essas operações são interpretadas e executadas dentro
+do ngspice.
+
+### Definição de Variáveis e Operações Matemáticas
+
+```spice
+let a = 3
+let b = 4
+let c = a*b
+print c
+```
+
+- `let a = 3` e `let b = 4` definem as variáveis `a` e `b`
+  com valores `3` e `4`, respectivamente.
+- `let c = a*b` calcula o produto de `a` e `b` e armazena
+  o resultado em `c`. O comando `print c` mostra `c =
+12.000000e+00`, indicando que `c` é igual a `12`.
+
+### Tentativas de Elevar ao Quadrado
+
+```spice
+print c^2
+```
+
+- A expressão `c^2` é utilizada para calcular o quadrado de
+  `c`. O resultado é `144`, como mostrado pela saída `c^2 =
+1.440000e+02`.
+
+```spice
+print c**2
+```
+
+- O comando `print c**2` resulta em um erro de sintaxe
+  (`PPerror: syntax error`), indicando que o operador `**`
+  não é reconhecido pelo ngspice para elevar um número
+  ao quadrado. No ngspice, `^` é o operador correto para
+  potenciação.
+
+### Outras Operações Matemáticas
+
+```spice
+print c*2
+```
+
+- Multiplica `c` por `2`, resultando em `24`, como mostrado
+  por `c*2 = 2.400000e+01`.
+
+```spice
+print a-b
+```
+
+- Calcula a diferença entre `a` e `b`, resultando em `-1`,
+  conforme `a-b = -1.00000e+00`.
+
+```spice
+print a/b
+```
+
+- Divide `a` por `b`, resultando em `0.75`, como indicado por
+  `a/b = 7.500000e-01`.
+
+### Erros com Sintaxes Inválidas
+
+```spice
+print a\b
+```
+
+- `a\b` é interpretado como uma tentativa de acessar uma
+  variável chamada `ab` devido à ausência de um operador
+  reconhecido entre `a` e `b`. Isso resulta em um aviso de que
+  a variável `ab` não está disponível.
+
+```spice
+print a.b
+```
+
+- `a.b` também é interpretado como uma referência a
+  uma variável chamada `a.b`, o que não é válido neste
+  contexto. A saída é um aviso de que `a.b` não está
+  disponível.
+
+### Conclusão
+
+No ngspice, `let` é usado para definir variáveis e realizar
+cálculos. A sintaxe para operações matemáticas deve
+seguir as convenções aceitas pelo ngspice, que incluem
+usar `^` para potenciação e evitar o uso de operadores
+não suportados como `**` para a mesma operação. Erros de
+sintaxe ou referências inválidas resultam em avisos ou erros,
+indicando que a operação ou a variável não é reconhecida.# Exemplos de Criação de Vetores no ngspice
+
+Este documento explica o processo de criação e manipulação
+de vetores no ngspice, utilizando um script de exemplo chamado
+`01-vector.sp`.
+
+## Script ngspice
+
+O script contém comandos para criar e manipular vetores
+no ambiente `.control` do ngspice. Aqui está o conteúdo e
+explicação do script:
+
+```spice
+.control
+# criando vetor de reais de tamanho 5
+let myvec = vector(5)
+print myvec  ; imprime o vetor
+
+# Erro de tentativa de acessar dimensões incorretas
+let myvec[0][0] = (pi, pi) ; Too many dimensions given. Only 1 are present.
+
+# Redefinindo myvec para um valor complexo singular
+let myvec = (pi, pi)
+print myvec
+
+# Cria um vetor de tamanho 5 de complexos
+let myvec = j(vector(5))
+print myvec
+
+# Tentativa errada de atribuir valor complexo considerando múltiplas dimensões
+let myvec[0][0] = (pi, pi) ; Too many dimensions given. Only 1 are present.
+
+# Atribuição correta de um valor complexo na primeira posição
+let myvec[0] = (pi, pi)
+print myvec
+
+.endc
+
+.end
+```
+
+### Descrição dos Comandos
+
+1. **Criação de um Vetor de Reais**:
+   - `let myvec = vector(5)` cria um vetor `myvec` com 5
+                             elementos inicializados em zero.
+
+2. **Impressão do Vetor**:
+   - `print myvec` exibe os valores do vetor no console.
+
+3. **Erro ao Acessar Vetor**:
+   - `let myvec[0][0] = (pi, pi)` tenta atribuir um valor complexo a um
+                                  vetor tratando-o como uma matriz
+                                  bidimensional, o que gera um erro
+                                  porque `myvec` tem apenas uma dimensão.
+
+4. **Redefinição de Vetor para Valor Complexo**:
+   - `let myvec = (pi, pi)` redefine `myvec` para armazenar
+                            um único valor complexo `(π, π)`.
+
+5. **Criação de Vetor Complexo**:
+   - `let myvec = j(vector(5))` cria um novo vetor `myvec`
+                                com 5 elementos complexos inicializados
+                                em zero.
+
+6. **Atribuição Correta em Vetor Complexo**:
+   - `let myvec[0] = (pi, pi)` atribui corretamente um valor
+                               complexo à primeira posição de `myvec`.
+
+## Saída do ngspice
+
+Ao rodar o script `01-vector.sp` com o comando `ngspice -b
+01-vector.sp`, obtemos a seguinte saída:
+
+```output
+Note: No compatibility mode selected!
+
+Circuit: exemplo 01
+
+                                Constant values
+                                constants  Wed Dec 27 18:41:13 UTC 2023
+--------------------------------------------------------------------------------
+Index   myvec
+--------------------------------------------------------------------------------
+0       0.000000e+00
+1       1.000000e+00
+2       2.000000e+00
+3       3.000000e+00
+4       4.000000e+00
+Too many dimensions given. Only 1 are present.
+myvec = 3.141593e+00,3.141593e+00
+                                Constant values
+                                constants  Wed Dec 27 18:41:13 UTC 2023
+--------------------------------------------------------------------------------
+Index   myvec
+--------------------------------------------------------------------------------
+0       0.000000e+00,   0.000000e+00
+1       0.000000e+00,   1.000000e+00
+2       0.000000e+00,   2.000000e+00
+3       0.000000e+00,   3.000000e+00
+4       0.000000e+00,   4.000000e+00
+Too many dimensions given. Only 1 are present.
+                                Constant values
+                                constants  Wed Dec 27 18:41:13 UTC 2023
+--------------------------------------------------------------------------------
+Index   myvec
+--------------------------------------------------------------------------------
+0       3.141593e+00,   3.141593e+00
+1       0.000000e+00,   1.
+
+000000e+00
+2       0.000000e+00,   2.000000e+00
+3       0.000000e+00,   3.000000e+00
+4       0.000000e+00,   4.000000e+00
+Note: No ".plot", ".print", or ".fourier" lines; no simulations run
+```
+
+### Análise da Saída
+
+- **Impressões Iniciais**: Mostram os valores inicializados
+do vetor `myvec` como reais e depois como complexos.
+- **Erros de Dimensão**: Indicam tentativas incorretas de
+manipulação de dimensões do vetor.
+- **Valores Finais**: Mostram a correta atribuição de
+valores complexos ao vetor `myvec`.
+
+```{bash}
+>  ngspice 2943 -> let a = vector(5)
+>  ngspice 2944 -> echo $&a
+0 1 2 3 4
+>  ngspice 2945 -> echo $a(2)
+Error: a(2): no such variable.
+
+>  ngspice 2946 -> echo $a{2}
+Error: a: no such variable.
+2
+>  ngspice 2947 -> echo $a[2]
+Error: a[2]: no such variable.
+
+>  ngspice 2948 -> print a
+                                Constant values
+                                constants  Wed Dec 27 18:41:13 UTC 2023
+--------------------------------------------------------------------------------
+Index   a
+--------------------------------------------------------------------------------
+0       0.000000e+00
+1       1.000000e+00
+2       2.000000e+00
+3       3.000000e+00
+4       4.000000e+00
+>  ngspice 2949 -> let a[3] = 76999
+>  ngspice 2950 -> print a
+                                Constant values
+                                constants  Wed Dec 27 18:41:13 UTC 2023
+--------------------------------------------------------------------------------
+Index   a
+--------------------------------------------------------------------------------
+0       0.000000e+00
+1       1.000000e+00
+2       2.000000e+00
+3       7.699900e+04
+4       4.000000e+00
+>  ngspice 2951 ->
+
+```
+
+A diferença entre os comandos `set` e `let` no ngspice pode
+ser compreendida através do contexto em que esses comandos
+são utilizados e como eles tratam as variáveis e expressões
+dentro do simulador. Vamos analisar a saída do modo interativo
+para ilustrar essas diferenças.
+
+### Comando `let`
+
+- **Propósito**: Utilizado para definir variáveis que podem
+armazenar valores numéricos ou expressões. As variáveis
+definidas com `let` podem ser manipuladas e utilizadas em
+cálculos matemáticos subsequentes dentro do ngspice.
+- **Características**:
+  - `let` cria uma variável que pode ser vista e manipulada
+          como um vetor dentro do ngspice.
+  - As variáveis criadas com `let` são tratadas como vetores
+    e podem ser utilizadas em funções matemáticas ou comandos
+    que esperam vetores.
+
+**Exemplo de uso**:
+```spice
+let a = 42
+print a  # a = 4.200000e+01
+```
+- Aqui, `a` é tratada como um vetor de um elemento e pode
+  ser utilizada em operações matemáticas.
+
+### Comando `set`
+
+- **Propósito**: Usado principalmente para definir parâmetros
+                 de configuração ou variáveis de ambiente no ngspice,
+                 mas não para operações matemáticas diretas.
+- **Características**:
+  - `set` é usado para definir valores que são mais
+     estáticos e configuráveis dentro do ngspice, como opções
+     de simulação.
+  - Não cria vetores ou variáveis que possam ser manipuladas
+    matematicamente como `let`. Em vez disso, define valores
+    que são acessíveis através da notação `$`, mas não
+    diretamente manipuláveis para cálculos.
+
+**Exemplo de uso**:
+```spice
+set b = 43
+echo $b  # 43
+```
+- `b` é tratada como uma variável simples, acessível
+através da notação `$b`, mas não diretamente utilizável
+em expressões matemáticas dentro de comandos como `let`.
+
+### Observações sobre os erros e comportamentos:
+
+- **Erro ao usar `$&b`**:
+  - O erro "no such variable" ocorre porque a combinação
+   `$&` não é reconhecida como uma referência válida no
+    ngspice para variáveis definidas com `set`.
+
+- **Erro ao calcular expressões com `set`**:
+  - Ao tentar `set c = 2*b`, o resultado é `2`, mostrando
+    que o ngspice não executou a operação matemática
+    esperada. Isso ocorre porque `set` não está tratando
+   `b` como um vetor ou permitindo operações matemáticas
+    diretas sobre ele.
+
+- **Erro ao usar `let` para operações com variáveis de `set`**:
+  - As tentativas de usar `let` para definir `d` como `2*b`
+    falham porque `b` não é tratável como um vetor ou valor
+    numérico direto dentro da expressão esperada por `let`.
+
+### Conclusão
+
+Os comandos `set` e `let` servem a propósitos distintos
+dentro do ngspice. `let` é adequado para a criação de
+variáveis matematicamente manipuláveis, enquanto `set`
+é mais apropriado para configurar parâmetros estáticos ou
+variáveis de ambiente que não necessitam de manipulação
+matemática direta. A confusão e os erros ocorrem quando
+se tenta misturar esses usos, especialmente em expressões
+matemáticas onde o ngspice espera variáveis tratadas por
+`let`.
+# variáveis
+
+No ngspice, você pode definir e manipular variáveis usando
+os comandos `let` e `set` tanto no modo interativo quanto
+dentro de seções `.control` e `.endc`.
+
+1. **Comando `let`**:
+
+   - **Dentro de uma seção `.control`**: Usado para criar
+     variáveis locais ou vetores para armazenar resultados
+     de expressões ou funções. Por exemplo, você pode usar
+     `let var = expression` para calcular e armazenar o resultado
+     de uma expressão em `var` .
+
+2. **Comando `set`**:
+   - **Dentro de uma seção `.control`**: O comando `set` é
+     utilizado para definir o valor de uma variável ou modificar
+     configurações do simulador. Este comando permite atribuir
+     valores numéricos, strings ou listas a uma variável. A
+     sintaxe típica é `set variable=value`. Se nenhum valor
+     for especificado, a variável será definida como `true` .
+   - **No modo interativo**: O `set` funciona de forma similar,
+     permitindo que você ajuste variáveis ou configurações
+     durante uma sessão interativa. Por exemplo, `set temp=25`
+     definiria a variável `temp` para 25 no contexto atual.
+
+Ambos os comandos são parte integral da manipulação de
+dados e controle de simulação em ngspice, permitindo uma
+flexibilidade considerável na execução de simulações e
+na análise de dados.
+
+## vetores
+
+No ngspice, a criação e manipulação de vetores podem ser
+feitas usando os comandos `let` e `set` dentro do contexto de
+uma seção `.control` e `.endc` ou em modo interativo. Aqui
+está um exemplo de como você pode criar e operar com vetores:
+
+### Criando Vetores com `let`
+
+Você pode criar um vetor e armazenar valores nele usando
+o comando `let`. Por exemplo, para criar um vetor chamado
+`myvector` e atribuir uma série de valores numéricos a ele,
+você usaria:
+
+file: -> 01.sp
+
+```ngspice
+.control
+let myvector = [1, 2, 3, 4, 5]
+.endc
+```
+
+### Realizando Operações com Vetores
+
+Após criar um vetor, você pode realizar várias operações
+matemáticas. Por exemplo, suponha que você queira adicionar
+um valor constante a cada elemento do vetor `myvector`. Você
+poderia fazer isso com:
+
+file: -> 02.sp
+
+```ngspice
+.control
+let newvector = myvector + 1
+.endc
+```
+
+Este comando adiciona 1 a cada elemento de `myvector`, resultando em `newvector` com os valores `[2, 3, 4, 5, 6]`.
+
+### Uso do `set` para Configurar Parâmetros de Simulação
+
+Enquanto o `let` é usado para manipulação de vetores e
+variáveis, o `set` é frequentemente usado para configurar
+parâmetros de simulação ou para definir variáveis
+ambientais. Por exemplo, para definir a temperatura de
+simulação:
+
+```ngspice
+.control
+set temp=27
+.endc
+```
+
+### Exemplo de Uso de Vetores em Análise
+
+Se você quiser calcular a média dos valores em `myvector`,
+poderia usar o seguinte comando:
+
+```ngspice
+.control
+let average = avg(myvector)
+echo "A média é: " average
+.endc
+```
+
+Este exemplo mostra como criar vetores, realizar operações
+simples e utilizar funções para processar dados em vetores
+dentro do ngspice. Estes vetores e operações podem ser
+extremamente úteis para análise de dados e automação de
+tarefas de simulação complexas.
+### Passo 1: Alocar um Vetor
+
+Antes de atribuir valores, você precisa criar um vetor com
+um tamanho apropriado. Isso pode ser feito usando as funções
+`vector()`, `unitvec()`, ou uma notação de colchetes `[n1 n2
+n3 ...]` que simplesmente enumera os valores iniciais do vetor.
+
+**Exemplo**:
+
+```ngspice
+let myVector = vector(10)  # Cria um vetor de tamanho 10 com
+                           # valores iniciais zero.
+```
+
+### Passo 2: Alterar o Tipo do Vetor (Opcional)
+
+Se você desejar trabalhar com números complexos, pode mudar
+o tipo do vetor para complexo usando a função `j()`.
+
+**Exemplo**:
+
+```ngspice
+let myVector = j(vector(10))  # Converte o vetor de 10
+                              # elementos para complexo, iniciando com zeros.
+```
+
+### Passo 3: Redefinir as Dimensões do Vetor
+
+Depois de criar o vetor, você pode alterar suas dimensões
+para se comportar como uma matriz usando a função `reshape`.
+
+**Exemplo**:
+
+```ngspice
+reshape myVector [2][5]  # Redefine o vetor para ser uma
+                         # matriz de 2 linhas e 5 colunas.
+```
+
+### Passo 4: Inicializar o Conteúdo do Vetor
+
+Finalmente, você pode inicializar ou redefinir os
+valores do vetor. A notação usada para acessar
+um elemento específico da matriz segue a estrutura
+`nome[índice_linha][índice_coluna]`, e você pode atribuir
+valores diretos ou expressões complexas.
+
+**Exemplo**:
+
+```ngspice
+let myVector[0][0] = (pi, pi)  # Atribui o valor complexo
+                               # (π, π) ao primeiro elemento da matriz.
+```
+
+### Inicialização Eficiente de Vetores Reais
+
+Para a inicialização eficiente de vetores reais, você pode
+usar a função `compose`, que permite atribuir uma sequência
+de valores diretamente na declaração.
+
+**Exemplo**:
+
+```ngspice
+compose a values (pi, pi) (1,1) (2,sqrt(7)) (boltz,e)
+reshape a [2][2]
+```
+
+Neste exemplo, `a` é inicializado com quatro pares de valores,
+e então é remodelado para uma matriz 2x2.
+
+### Considerações Adicionais
+
+- **unlet**: A função `unlet` é utilizada para desfazer
+  a definição de uma variável ou vetor.
+- **compose**: Como visto, `compose` é uma maneira eficiente
+  de criar e inicializar vetores com valores complexos ou
+  conjuntos de valores.
+
+Essas etapas e funções permitem um controle detalhado sobre
+a criação e manipulação de dados em vetores dentro do
+ngspice, facilitando a modelagem de sistemas eletrônicos
+complexos e análises multidimensionais.
