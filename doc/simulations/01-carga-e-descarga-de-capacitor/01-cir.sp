@@ -1,7 +1,7 @@
 CARGA E DESCARGA DE CAPACITOR
 
 .param Vvalue  = 25V           ; tensão fornecida
-.param V0value = 4             ; carga no capacitor com a chave aberta
+.param V0value = 0             ; carga no capacitor com a chave aberta
 .param Rvalue  = 1.2Meg        ; valor da resistência
 .param Cvalue  = 20uF          ; valor da Capacitância
 .param tau     = Rvalue*Cvalue

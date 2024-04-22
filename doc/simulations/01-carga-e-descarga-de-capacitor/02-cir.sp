@@ -12,7 +12,8 @@ CARGA E DESCARGA DE CAPACITOR
 * V0 = 25 V
 *
 
-** circuito
+** circuito:
+*
 * v_i(t) ---[ R ]---+---[ C ]--- GND
 *                   |
 *               v_out(t)
@@ -21,10 +22,10 @@ CARGA E DESCARGA DE CAPACITOR
 
 V0 n1 GND  {Vvalue}
 R1 n1  n2  {Rvalue}
-C1 n2 GND  {Cvalue}
+C1 n2 GND  {Cvalue} IC={V0value}
 
-.ic v(n2) = {V0value}          ; condições inicias
-.tran {tau/1000} {5*tau}
+* Configuração da análise transiente com UIC
+.tran {tau/1000} {5*tau} UIC
 
 .control
     run
