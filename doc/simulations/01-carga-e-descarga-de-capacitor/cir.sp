@@ -12,8 +12,8 @@ CARGA E DESCARGA DE CAPACITOR
 ** circuito
 
 V0 n1 0  25V
-R1 n1 n2 1.2Meg
-C1 n2 0  20uF
+R1 n1 n2 {Rvalue}
+C1 n2 0  {Cvalue}
 
 .ic v(n2) = 0             ; condições inicias
 .tran {tau/1000} {5*tau}
