@@ -1,0 +1,52 @@
+>  $ ngspice
+******
+** ngspice-42 : Circuit level simulation program
+** Compiled with Sparse Direct Linear Solver
+** The U. C. Berkeley CAD Group
+** Copyright 1985-1994, Regents of the University of California.
+** Copyright 2001-2023, The ngspice team.
+** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html
+** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html
+** Creation Date: Wed Dec 27 18:41:13 UTC 2023
+******
+>  ngspice 3010 -> let a = 42
+>  ngspice 3011 -> echo $&a
+42
+>  ngspice 3012 -> print a
+a = 4.200000e+01
+>  ngspice 3013 -> set b = 43
+>  ngspice 3014 -> echo $&b
+Error: &b: no such variable.
+
+>  ngspice 3015 -> print b
+Warning from checkvalid: vector b is not available or has zero length.
+>  ngspice 3016 -> echo $b
+43
+>  ngspice 3017 -> set c = 2*b
+>  ngspice 3018 -> echo $c
+2
+>  ngspice 3019 -> print $b
+43 = 4.300000e+01
+>  ngspice 3020 -> print $c
+2 = 2.000000e+00
+>  ngspice 3021 -> set c = {2*b}
+>  ngspice 3022 -> print $c
+2 = 2.000000e+00
+>  ngspice 3023 -> print $b
+43 = 4.300000e+01
+>  ngspice 3024 -> let d = 2*b
+Warning from checkvalid: vector b is not available or has zero length.
+Error: RHS " 2*b" invalid
+>  ngspice 3025 -> let d = {2*b}
+Warning from checkvalid: vector b is not available or has zero length.
+Error: RHS " 2*b" invalid
+>  ngspice 3026 -> let d = {2*$b}
+>  ngspice 3027 -> print $d
+Error: d: no such variable.
+which variable: ^[
+Warning from checkvalid: vector s not available or has zero length.
+>  ngspice 3028 -> print d
+d = 8.600000e+01
+>  ngspice 3029 -> echo $&d
+86
+
