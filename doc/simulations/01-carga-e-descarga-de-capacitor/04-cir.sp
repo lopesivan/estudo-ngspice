@@ -38,7 +38,14 @@ C1 n2 GND  {Cvalue}
     let a = (1- exp(-5))*100
     echo 5 tau correspondem a {$&tau5}s e $&a% carrgado
 
+    meas tran ytau3 FIND n2 AT=tau3
+    meas tran ytau5 FIND n2 AT=tau5
+    echo {$&ytau3}
+    echo {$&ytau5}
+
     wrdata output.csv n1 n2
+    shell python 04-cir.py
+    quit
 .endc
 
 .end

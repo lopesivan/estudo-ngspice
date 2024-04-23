@@ -37,5 +37,5 @@ plt.legend()
 plt.grid(True)
 
 # Salvar o gráfico em PDF
-plt.savefig("tensao_no_n1.pdf")
+plt.savefig("04-cir.pdf")
 plt.close()  # Fechar a figura para liberar recursos

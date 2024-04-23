@@ -16,6 +16,6 @@ R1    1 0  100
     meas tran Vpp PP v(1) from=0 to=3.14
     meas tran time_when_cross_first WHEN v(1) CROSS 0.5 RISE=1
 *   wrdata output.csv v(1)
-*    quit
+*   quit
 .endc
 .end
