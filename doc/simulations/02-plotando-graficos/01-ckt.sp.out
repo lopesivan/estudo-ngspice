@@ -1,0 +1,41 @@
+******
+** ngspice-42 : Circuit level simulation program
+** Compiled with Sparse Direct Linear Solver
+** The U. C. Berkeley CAD Group
+** Copyright 1985-1994, Regents of the University of California.
+** Copyright 2001-2023, The ngspice team.
+** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html
+** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html
+** Creation Date: Wed Dec 27 18:41:13 UTC 2023
+******
+
+Note: No compatibility mode selected!
+
+
+Circuit: * exemplo de netlist com fonte senoidal
+
+Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
+
+
+Initial Transient Solution
+--------------------------
+
+Node                                   Voltage
+----                                   -------
+1                                            0
+v1#branch                                    0
+
+
+No. of Data Rows : 59
+x                   =  3.141563e+00
+vmax                =  9.996179e-01 at=  1.543150e+00
+vpp                 =  9.996179e-01 from=  0.000000e+00 to=  3.140000e+00
+ meas tran time_when_cross_first when v(1) cross 0.5 rise=1 failed!
+
+[48;5;4m[1;38;5;18m I [0m [6 qngspice 3280 -> print a[K [Kmeas tran time_when_cross_first when v(1) cross 0.5 rise=1[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[C[1P[1P[1P[1P[1P[1P[1P[1P[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P[1P[1P rise=11 rise=1
+ meas tran t when v(1) cross 1 rise=1 failed!
+
+[48;5;4m[1;38;5;18m I [0m [6 qngspice 3281 -> meas tran t when v(1) cross 1 rise=1[1@.[1@0[C1 rise=1[1P rise=1
+ meas tran t when v(1) cross .01 rise=1 failed!
+
+[48;5;4m[1;38;5;18m I [0m [6 qngspice 3282 -> ngspice-42 done
