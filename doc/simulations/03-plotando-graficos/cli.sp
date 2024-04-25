@@ -1,15 +1,13 @@
 CARGA E DESCARGA DE CAPACITOR
 
-.include circuito.cir
-
-.tran {tau/1000} {5*tau}
+.include ckt.cir
+.include sim.cir
 
 .csparam tau3 = {3*tau}
 .csparam tau5 = {5*tau}
 
 .control
     run
-*   plot n1 n2
     print tau3
     print tau5
     let a = (1- exp(-3))*100

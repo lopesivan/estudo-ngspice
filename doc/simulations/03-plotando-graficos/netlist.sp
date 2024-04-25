@@ -1,8 +1,7 @@
 CARGA E DESCARGA DE CAPACITOR
 
-.include netlist.cir
-
-.tran {tau/1000} {5*tau}
+.include ckt.cir
+.include sim.cir
 
 .csparam tau3 = {3*tau}
 .csparam tau5 = {5*tau}
