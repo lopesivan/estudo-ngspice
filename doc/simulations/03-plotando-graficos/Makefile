@@ -3,7 +3,7 @@ CKT=netlist
 $(CKT).out: $(CKT).sp
 	ngspice $(CKT).sp | tee $(CKT).out
 
-utput.csv: plotter.sp
+output.csv: plotter.sp
 	ngspice -b plotter.sp
 
 plot: output.csv
