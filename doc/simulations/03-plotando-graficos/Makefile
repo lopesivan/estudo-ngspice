@@ -3,6 +3,9 @@ CKT=ckt
 $(CKT).out: $(CKT).sp
 	ngspice $(CKT).sp | tee $(CKT).out
 
+cli: cli.sp
+	ngspice cli.sp | tee cli.out
+
 output.csv: $(CKT).out
 
 plot: output.csv
@@ -12,4 +15,4 @@ show:
 	zathura $(CKT).pdf
 
 clean:
-	rm output.csv $(CKT).out $(CKT).pdf
+	rm output.csv $(CKT).out $(CKT).pdf cli.out

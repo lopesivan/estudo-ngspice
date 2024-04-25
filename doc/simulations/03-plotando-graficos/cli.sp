@@ -1,6 +1,6 @@
 CARGA E DESCARGA DE CAPACITOR
 
-.include netlist.cir
+.include circuito.cir
 
 .tran {tau/1000} {5*tau}
 
@@ -21,10 +21,6 @@ CARGA E DESCARGA DE CAPACITOR
     meas tran ytau5 FIND n2 AT=tau5
     echo {$&ytau3}
     echo {$&ytau5}
-
-    wrdata output.csv n1 n2
-    shell python plotter.py ckt.pdf
-    quit
 .endc
 
 .end

@@ -41,10 +41,11 @@ plt.text(tau5_time, plt.ylim()[1] * 0.95, tau, horizontalalignment="right", colo
 # Destacar o ponto específico (333, 67.8)
 # Usa zorder para colocar o ponto acima das linhas
 ponto = {"x": 60, "y": 20}
-plt.scatter(ponto.x, ponto.y, color="blue", s=100, edgecolor="black", zorder=5)
+# plt.scatter(ponto["x"], ponto["y"], color="blue", s=100, edgecolor="black", zorder=5)
+plt.scatter(ponto["x"], ponto["y"], color="red", s=10, edgecolor="black", zorder=5)
 plt.annotate(
-    "Ponto de Interseção (333, 67.8)",
-    (ponto.x, ponto.y),
+    "Ponto de Interseção ({},{})".format(ponto["x"], ponto["y"]),
+    (ponto["x"], ponto["y"]),
     textcoords="offset points",
     xytext=(0, 10),
     ha="center",
