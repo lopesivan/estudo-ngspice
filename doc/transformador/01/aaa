@@ -1,0 +1,26 @@
+Create a subcircuit for your transformer and attach it to the transformer sybol.
+
+The subcircuit may look like:
+
+.subckt transformer1 in1 in2 out1 out2 Lin=100u Lout=100u Rin=1 Rout=1
+* inductances
+Li in1 intin {Lin}
+Lo out1 intou {Lout}
+* coupling factors
+K1 Li Lo 1
+* series resistances
+Ri intin in2 {Rin}
+Ro intou out2 {Ro}
+.ends
+The call to this subcircuit then may be
+
+xtran 1 2 3 4 transformer1 Lin=100u Lout=900u Rin=1 Rout=3
+
+1, 2, 3, and 4 are the pins of your transformer symbol.
+
+https://bugs.launchpad.net/kicad/+bug/1829618/comments/4 45 gives a hint where to place the part of the x line
+transformer1 Lin=100u Lout=900u Rin=1 Rout=3
+of your call to the subcircuit (put it into the Spice_Model field).
+
+Please have a look at https://www.analog.com/en/technical-articles/ltspice-basic-steps-for-simulating-transformers.html# 112, especially see the equivalence of L and n. Real data have to be found in the transformer data sheet.
+
