@@ -1,0 +1,73 @@
+Boa 👌 você já usou o `.meas` do **ngspice** do jeito certo para achar o **máximo**. Agora vamos aos outros casos:
+
+---
+
+## 🔹 Corrente RMS
+
+O ngspice já tem operador RMS embutido:
+
+```spice
+.meas tran I_L_rms RMS i(L1) FROM=20ms TO=40ms
+```
+
+Isso te dá o **valor eficaz** da corrente no intervalo especificado (nesse caso, de 20 ms a 40 ms → depois do regime já estabelecido).
+
+---
+
+## 🔹 Módulo e argumento (magnitude e fase)
+
+Aqui depende do tipo de simulação:
+
+### 1. **Se você está em transiente (`.tran`)**
+
+* O `.meas` não tem comando direto para “fase” no tempo.
+* Você pode calcular o **valor médio quadrático** (RMS) e o **valor médio** mas não o ângulo fásico diretamente.
+* Para achar o argumento, normalmente se mede o **tempo do cruzamento em zero** da corrente e compara com o da tensão de referência.
+  Exemplo:
+
+  ```spice
+  .meas tran tV  TRIG v(1) VAL=0 RISE=1
+  .meas tran tI  TARG i(L1) VAL=0 RISE=1
+  ```
+
+  Depois a diferença `tI - tV` dá o atraso em segundos → multiplica por `2πf` → fase em rad.
+
+### 2. **Se você está em AC analysis (`.ac`)**
+
+Muito mais fácil 🙂
+
+* Em `.ac` você já está trabalhando no domínio fasorial.
+* O ngspice retorna diretamente módulo e fase de qualquer grandeza.
+* Para medir corrente do indutor:
+
+  ```spice
+  .print ac i(L1)
+  ```
+
+  Isso te dá a parte real e imaginária.
+* Se quiser magnitude e fase direto:
+
+  ```spice
+  .print ac mag(i(L1)) phase(i(L1))
+  ```
+
+  → `mag(i(L1))` é o módulo (A),
+  → `phase(i(L1))` é o argumento (graus).
+
+---
+
+✅ Então:
+
+* Use `.tran` se quiser **formas de onda no tempo** e RMS.
+* Use `.ac` se quiser **módulo e argumento de fasores** diretamente.
+
+---
+
+👉 Quer que eu adapte seu netlist com um bloco de `.meas` que já calcule:
+
+* `I_L_max`
+* `I_L_rms`
+* `|I_L|` e `∠I_L` (na análise AC)
+
+tudo pronto para rodar?
+
