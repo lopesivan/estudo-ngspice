@@ -1,0 +1,42 @@
+Boa! 😃
+
+No **ngspice**, para observar a tensão entre dois nós arbitrários basta usar a forma:
+
+```
+v(<nó positivo>, <nó negativo>)
+```
+
+No seu caso, para a **tensão entre os nós 1 e 3** (ou seja, $v_{13} = v(1) - v(3)$):
+
+```spice
+plot v(1,3)
+```
+
+---
+
+### Exemplos no seu netlist:
+
+No bloco de controle você pode fazer:
+
+```spice
+.control
+  run
+  plot v(1,3)          ; tensão entre nó 1 e nó 3
+  plot v(2) v(3) v(1,3)
+.endc
+```
+
+Se quiser **imprimir em forma numérica** em vez de gráfico:
+
+```spice
+.print tran v(1,3)
+```
+
+ou, em AC sweep:
+
+```spice
+.print ac v(1,3)
+```
+
+---
+
