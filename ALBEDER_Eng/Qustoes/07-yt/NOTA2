@@ -1,0 +1,38 @@
+Você pode medir o **máximo da tensão no indutor** com `.meas` e **plotar a corrente** com `i(L1)`.
+
+Como o indutor está entre os nós **1** (pino +) e **2** (pino −), a tensão nele é `v(1,2)`. Para evitar o pico de partida, meça após alguns períodos.
+
+Coloque isto no seu netlist (ou no bloco `.control`):
+
+```spice
+* --- Medidas no transiente (após a condição inicial) ---
+* Máximo positivo e mínimo (para ver picos de cada polaridade)
+.meas tran V_L_max      MAX v(1,2)   FROM={3*T} TO={5*T}
+.meas tran V_L_min      MIN v(1,2)   FROM={3*T} TO={5*T}
+
+* Máximo do módulo da tensão (pico absoluto)
+.meas tran V_L_abs_max  MAX abs(v(1,2)) FROM={3*T} TO={5*T}
+
+* Corrente RMS no indutor (opcional)
+.meas tran I_L_rms      RMS i(L1)    FROM={3*T} TO={5*T}
+```
+
+E para **plotar a corrente do indutor** (sentido do nó 1 → nó 2):
+
+```spice
+.control
+  run
+  plot i(L1)              ; corrente no indutor
+  plot v(1,2)             ; tensão no indutor (para conferir)
+.endc
+```
+
+Dicas rápidas:
+
+* `i(L1)` é a corrente pelo indutor **do primeiro nó para o segundo**.
+* Se quiser ver a amplitude pico-a-pico:
+  `.meas tran V_L_pp PP v(1,2) FROM={3*T} TO={5*T}`
+* Para obter também o **instante** do pico, o ngspice já reporta o tempo junto ao valor do `.meas`.
+
+⚠️ Observação: no seu netlist a fonte está `SIN(0 169.71 60)`, ou seja, **169.71 V de pico**. Se 169.71 V for **RMS**, então use `SIN(0 240 60)` (pico = 169.71·√2 ≈ 240 V).
+
