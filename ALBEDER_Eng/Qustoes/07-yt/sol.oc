@@ -7,7 +7,7 @@ R = 25
 
 disp('---------------- sol ----------------')
 raiz_2 = sqrt(2);
-Vs = Vs_rms * raiz_2;
+Vs = Vs_rms * raiz_2
 V1 = V1_rms * raiz_2;
 V2 = V2_rms * raiz_2;
 
@@ -51,13 +51,15 @@ _V2       = to_rd(V2, Theta2)
 _ZR       = to_rd(R, 0)
 _Z_bobina = to_rd(Z_bobina, arg_Z_bobina)
 _Z_total  = to_rd(Z_total, arg_Z_total)
+_I        = to_rd(I, Theta2)
 
 disp('')
 disp(' polar: -----------------------------------')
-[Vs, arg_Vs] = to_pd(_Vs)
-[V1, arg_V1] = to_pd(_V1)
-[V2, arg_V2] = to_pd(_V2)
-[ZR, arg_ZR] = to_pd(_ZR)
+[Vs, arg_Vs]             = to_pd(_Vs)
+[V1, arg_V1]             = to_pd(_V1)
+[V2, arg_V2]             = to_pd(_V2)
+[ZR, arg_ZR]             = to_pd(_ZR)
 [Z_bobina, arg_Z_bobina] = to_pd(_Z_bobina)
-[Z_total, arg_Z_total] = to_pd(_Z_total)
+[Z_total, arg_Z_total]   = to_pd(_Z_total)
+[I, arg_I]               = to_pd(_I)
 
