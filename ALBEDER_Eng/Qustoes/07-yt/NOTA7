@@ -1,0 +1,99 @@
+Perfeito — dá pra extrair **módulos** (pico, pico-a-pico, RMS) e **fases** das suas tensões no modo interativo do ngspice usando `meas`.
+Lembrando suas definições:
+
+* $V_s \equiv v(1)$
+* $V_1 \equiv v(1,3)$
+* $V_2 \equiv v(3)$
+
+Abaixo vai um “kit” de comandos prontos. Use um trecho de regime permanente (ex.: 20–40 ms).
+
+---
+
+## Módulos (RMS, pico-a-pico e pico)
+
+```spice
+* --- RMS ---
+meas tran Vs_rms  RMS v(1)            from=20ms to=40ms
+meas tran V1_rms  RMS par('v(1)-v(3)') from=20ms to=40ms
+meas tran V2_rms  RMS v(3)            from=20ms to=40ms
+
+* --- Pico-a-pico (PP) ---
+meas tran Vs_pp   PP  v(1)            from=20ms to=40ms
+meas tran V1_pp   PP  par('v(1)-v(3)') from=20ms to=40ms
+meas tran V2_pp   PP  v(3)            from=20ms to=40ms
+
+* --- Converter para pico (pk) a partir de PP ---
+let Vs_pk = Vs_pp/2
+let V1_pk = V1_pp/2
+let V2_pk = V2_pp/2
+
+* --- Converter RMS -> pico (p/ senóide) ---
+let Vs_mag = sqrt(2)*Vs_rms
+let V1_mag = sqrt(2)*V1_rms
+let V2_mag = sqrt(2)*V2_rms
+```
+
+* `RMS` te dá o **valor eficaz**.
+* `PP` te dá **pico-a-pico**; dividindo por 2 você obtém o **pico** (amplitude).
+* Para senóide pura, **módulo fasorial** = $\sqrt{2}\times \text{RMS}$.
+
+> Dica: o `par('v(1)-v(3)')` é necessário porque o `meas` não aceita `v(1,3)` diretamente.
+
+---
+
+## Fases (argumentos) relativas à fonte $V_s$
+
+Fase = atraso/adiantamento em relação a `v(1)`.
+Vamos medir o **atraso temporal** entre os cruzamentos por zero (mesmo número de subida) e converter para graus.
+
+```spice
+* Frequência (use 60 diretamente ou seu parâmetro, se disponível)
+let FREQ = 60
+
+* --- V2 (v(3)) em relação a Vs (v(1)) ---
+meas tran dly_V2  TRIG v(1) VAL=0 RISE=3  TARG v(3) VAL=0 RISE=3
+let  phi_V2 = -360*FREQ*dly_V2
+
+* --- V1 (v(1,3)) em relação a Vs ---
+meas tran dly_V1  TRIG v(1) VAL=0 RISE=3  TARG par('v(1)-v(3)') VAL=0 RISE=3
+let  phi_V1 = -360*FREQ*dly_V1
+```
+
+* Use o mesmo **evento** (ex.: `VAL=0` e `RISE=3`) em ambos os sinais para evitar ambiguidades.
+* A fórmula **`phi = -360*FREQ*delay`** dá o ângulo em **graus**:
+
+  * se o **alvo** cruza depois do **referência** → `delay > 0` → **ângulo negativo** (alvo atrasa/“lag”).
+  * se cruza antes → `delay < 0` → **ângulo positivo** (alvo adianta/“lead”).
+
+> Isso bate com seus valores: $\angle V_1 \approx +34.8^\circ$ (adianta a fonte) e $\angle V_2 \approx -43.2^\circ$ (atrasa a fonte), dentro do erro numérico.
+
+---
+
+## Conferência rápida em gráfico (opcional)
+
+```spice
+plot v(1) par('v(1)-v(3)') v(3)
+```
+
+---
+
+### Observações úteis
+
+* Se `TRIG/TARG` com `par('…')` te der erro, crie um **nó-espelho** sem perturbar o circuito:
+
+  ```spice
+  E13 13 0  1 3  1      * v(13) = v(1)-v(3)
+  meas tran dly_V1 TRIG v(1) VAL=0 RISE=3  TARG v(13) VAL=0 RISE=3
+  ```
+
+  (Esse nó **não altera** o circuito enquanto você não ligar nada nele.)
+* Ajuste `RISE=` (ou `FALL=`) para um ciclo em regime permanente (ex.: 3, 4, …).
+* Se a sua fonte for definida em **RMS** na análise AC, lembre que o ngspice já reporta **magnitude** e **fase** direto:
+
+  ```
+  ac lin 1 60 60
+  print ac mag(v(1)) phase(v(1)) mag(v(3)) phase(v(3)) mag(v(1)-v(3)) phase(v(1)-v(3))
+  ```
+
+Se quiser, te mando um bloquinho pronto que imprime **Vs, V1, V2** com **RMS, pico e fase** de uma vez.
+
