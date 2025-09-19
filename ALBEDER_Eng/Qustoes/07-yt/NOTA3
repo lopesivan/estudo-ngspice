@@ -1,0 +1,39 @@
+Ah, entendi o que aconteceu 👍
+
+No **ngspice**, o `.meas` não aceita diretamente a forma `v(1,3)` (diferença entre nós). Ele só reconhece nomes de vetores existentes. Mas você pode contornar isso de duas formas:
+
+---
+
+### ✅ 1. Usar expressão com `par()` dentro do `.meas`
+
+```spice
+.meas tran V13_max MAX par('v(1)-v(3)') FROM=20ms TO=40ms
+```
+
+Assim ele avalia a diferença como uma expressão.
+
+---
+
+### ✅ 2. Criar uma tensão explícita com uma fonte de controle
+
+Se você quiser sempre ter `v(1,3)` disponível como um vetor, adicione no netlist:
+
+```spice
+E13  13 0  1 3  1
+```
+
+Isso cria uma **fonte controlada de tensão** entre o nó `13` e o terra, com valor igual a `v(1)-v(3)`.
+Depois você pode medir normalmente:
+
+```spice
+.meas tran V13_max MAX v(13) FROM=20ms TO=40ms
+```
+
+---
+
+👉 O jeito mais prático é a primeira opção (`par('v(1)-v(3)')`), que funciona direto sem alterar o circuito.
+
+---
+
+Quer que eu monte para você um **bloco de `.meas` completo** (máximo, mínimo, RMS, valor pico-a-pico) para essa tensão `v(1,3)` já no formato certo para o ngspice?
+
