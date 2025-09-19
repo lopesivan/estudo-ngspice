@@ -1,0 +1,63 @@
+
+Vs_rms = 120
+V1_rms = 84
+V2_rms = 70
+f = 60
+R = 25
+
+disp('---------------- sol ----------------')
+raiz_2 = sqrt(2);
+Vs = Vs_rms * raiz_2;
+V1 = V1_rms * raiz_2;
+V2 = V2_rms * raiz_2;
+
+I        = V2/R
+Z_bobina = V1/I
+Z_total  = Vs/I
+
+# _Z_bobina = r + j*XL
+# _Z_total  = R + _Z_bobina
+
+r = .5 * (
+		(Z_total * Z_total - Z_bobina * Z_bobina)/R - R
+	)
+
+XL = sqrt(
+		Z_bobina * Z_bobina - r*r
+	)
+
+_Z_bobina = r + j*XL
+_Z_total  = R + _Z_bobina
+
+% XL = w*L
+w = 2*pi*f
+L = XL/w
+
+[Z_bobina, arg_Z_bobina] = to_pd(_Z_bobina)
+[Z_total, arg_Z_total] = to_pd(_Z_total)
+
+% Theta1 -  Theta2  = arg_Z_bobina
+% Theta_s - Theta2  = arg_Z_total
+Theta_s = 0;
+Theta1  = arg_Z_bobina - arg_Z_total + Theta_s;
+Theta2  = Theta1 - arg_Z_bobina;
+
+disp('---------------- resposta: ----------------')
+disp('')
+disp(' retangular: ------------------------------')
+_Vs       = to_rd(Vs, Theta_s)
+_V1       = to_rd(V1, Theta1)
+_V2       = to_rd(V2, Theta2)
+_ZR       = to_rd(R, 0)
+_Z_bobina = to_rd(Z_bobina, arg_Z_bobina)
+_Z_total  = to_rd(Z_total, arg_Z_total)
+
+disp('')
+disp(' polar: -----------------------------------')
+[Vs, arg_Vs] = to_pd(_Vs)
+[V1, arg_V1] = to_pd(_V1)
+[V2, arg_V2] = to_pd(_V2)
+[ZR, arg_ZR] = to_pd(_ZR)
+[Z_bobina, arg_Z_bobina] = to_pd(_Z_bobina)
+[Z_total, arg_Z_total] = to_pd(_Z_total)
+
