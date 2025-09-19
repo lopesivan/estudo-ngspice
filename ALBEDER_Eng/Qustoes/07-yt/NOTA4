@@ -1,0 +1,56 @@
+Boa pergunta 👌
+
+A linha
+
+```spice
+E13  13 0  1 3  1
+```
+
+é a notação do **ngspice** (e SPICE em geral) para uma **fonte de tensão dependente controlada por tensão** (do tipo *E*). Vamos destrinchar:
+
+---
+
+### Estrutura geral de uma fonte E
+
+```
+Exxx  N+  N-  Nc+  Nc-  Ganho
+```
+
+* **Exxx** → nome da fonte (aqui `E13`). Sempre começa com **E**.
+* **N+ N-** → nós de saída da fonte (aqui `13` e `0`).
+  → A tensão gerada aparece entre `N+` e `N-`.
+* **Nc+ Nc-** → nós de controle.
+  → A fonte mede a tensão entre `Nc+` e `Nc-`.
+* **Ganho** → fator multiplicador aplicado à tensão de controle.
+
+---
+
+### No seu exemplo
+
+```
+E13   13   0    1   3   1
+```
+
+* `E13` → nome da fonte.
+* `13 0` → saída entre nó 13 e terra.
+* `1 3` → entrada de controle = tensão entre nó 1 e nó 3.
+* `1` → ganho unitário.
+
+👉 Ou seja:
+
+$$
+V(13,0) = 1 \cdot V(1,3)
+$$
+
+Então o nó `13` passa a ter exatamente a tensão `v(1,3)` que você queria medir.
+
+---
+
+### Por que usar isso?
+
+Porque o SPICE só mede tensões **em relação ao terra** (`v(x)` significa `v(x,0)`). Se você quer medir ou plotar `v(a,b)`, precisa escrever `v(a)-v(b)` como expressão, ou criar esse "nó auxiliar" com uma fonte controlada.
+
+---
+
+Quer que eu te mostre como ficaria o bloco `.meas` usando **apenas expressões** (sem adicionar esse `E13`), para pegar **máximo, mínimo, RMS e valor pico-a-pico** de `v(1,3)`?
+
