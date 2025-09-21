@@ -8,8 +8,8 @@ R = 25
 disp('---------------- sol ----------------')
 raiz_2 = sqrt(2);
 Vs = Vs_rms * raiz_2
-V1 = V1_rms * raiz_2;
-V2 = V2_rms * raiz_2;
+V1 = V1_rms * raiz_2
+V2 = V2_rms * raiz_2
 
 I        = V2/R
 Z_bobina = V1/I
