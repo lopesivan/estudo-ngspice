@@ -1,0 +1,39 @@
+O comando **`.CSPARAM`** no ngspice serve para **definir parâmetros que ficam
+disponíveis dentro de uma seção `.control`**.
+
+🔑 Diferença principal em relação ao `.PARAM`:
+
+* `.PARAM` define parâmetros avaliados **antes da simulação**
+(no setup do circuito).
+* `.CSPARAM` permite criar parâmetros que podem ser manipulados e usados
+**dentro do bloco de controle**, ou seja, durante execução de scripts de
+controle interativo.
+
+📌 Exemplo do manual:
+
+```spice
+* test csparam
+.param TEMPS = 27
+.csparam newt = {3*TEMPS}
+.csparam mytemp = ’2 + TEMPS’
+
+.control
+echo $&newt $&mytemp
+.endc
+.end
+```
+
+Nesse caso:
+
+* `TEMPS` é definido com `.param`.
+* `newt` e `mytemp` são definidos com `.csparam`.
+* Dentro do bloco `.control ... .endc`, você pode acessar esses valores com
+* `echo $&nome_param`.
+
+👉 Assim, o `.CSPARAM` é especialmente útil quando você quer **passar valores
+calculados para a parte de controle**, como loops, condições, ou scripts
+automatizados no ngspice.
+
+Quer que eu monte um exemplo prático onde você controla a temperatura de
+simulação usando `.csparam` dentro de um `.control`?
+
