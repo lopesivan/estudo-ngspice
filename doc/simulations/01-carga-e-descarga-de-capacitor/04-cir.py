@@ -15,20 +15,33 @@ plt.plot(data["tempo1"], data["V1"], label="Pulse")
 plt.plot(data["tempo2"], data["V2"], label="V(1)")
 
 # Desenhar linhas verticais para os tempos de 3 tau e 5 tau
-tau3_time = 7.200000e01  # 3 tau correspondem a 72s
-tau5_time = 1.200000e02  # 5 tau correspondem a 120s
+tau3_time = 72   # 3 tau correspondem a 72s
+tau5_time = 120  # 5 tau correspondem a 120s
 
-plt.axvline(x=tau3_time, color="green", linestyle="--", label="95.0213% carregado")
-plt.axvline(x=tau5_time, color="red", linestyle="--", label="99.3262% carregado")
+plt.axvline(x=tau3_time, color="green",
+            linestyle="--", label="95.0213% carregado")
+plt.axvline(x=tau5_time, color="red", linestyle="--",
+            label="99.3262% carregado")
 
 # Adicionar anotações com a letra grega tau
 greek_letterz = chr(964)
-tau = "{}{}".format(3, greek_letterz)
+tau = "{}{} ".format(3, greek_letterz)
+
 plt.text(
-    tau3_time, plt.ylim()[1] * 0.95, tau, horizontalalignment="right", color="green"
+    tau3_time,  # posição x = 72s
+    plt.ylim()[1] * 0.84,  # posição y = 95% do valor máximo atual no eixo y
+    tau,
+    horizontalalignment="right",
+    color="green"
 )
-tau = "{}{}".format(5, greek_letterz)
-plt.text(tau5_time, plt.ylim()[1] * 0.95, tau, horizontalalignment="right", color="red")
+
+tau = "{}{} ".format(5, greek_letterz)
+plt.text(
+    tau5_time,  # posição x = 120s
+    plt.ylim()[1] * 0.84,  # posição y = 95% do valor máximo atual no eixo y
+    tau,
+    horizontalalignment="right",
+    color="red")
 
 plt.title("Tensão no Nó 1")
 plt.xlabel("Tempo (s)")
