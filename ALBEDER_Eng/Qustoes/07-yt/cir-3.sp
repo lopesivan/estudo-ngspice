@@ -81,11 +81,62 @@ E13 13 0  1 3  1
 * 👉 Assim, o `.CSPARAM` é especialmente útil quando você quer
 * **passar valores calculados para a parte de controle**, como loops,
 * condições, ou scripts automatizados no ngspice.
-.csparam T = T
+.csparam T  = T
+.csparam Vs = Vs
+.csparam V1 = V1
+.csparam V2 = V2
 
 .control
 	run
 	listing e
+    echo "**************************************"
+    echo "**************** SOL: ****************"
+    echo "**************************************"
+    echo ""
+
+    echo  "T  =", $&T
+    echo  "Vs =", $&Vs
+    echo  "V1 =", $&V1
+    echo  "V2 =", $&V2
+    echo ""
+
+    echo "**************************************"
+    meas tran Vs_rms   RMS v(1)  from='4*T' to='5*T'
+    meas tran V13_rms  RMS v(13) from='4*T' to='5*T'
+    meas tran V2_rms   RMS v(3)  from='4*T' to='5*T'
+    echo "**************** RMS: ****************"
+    echo "Vs_rms  =", $&Vs_rms
+    echo "V13_rms =", $&V13_rms
+    echo "V2_rms  =", $&V2_rms
+    echo ""
+
+    echo "**************************************"
+    meas tran Vs_pp   PP v(1)  from='4*T' to='5*T'
+    meas tran V13_pp  PP v(13) from='4*T' to='5*T'
+    meas tran V2_pp   PP v(3)  from='4*T' to='5*T'
+    echo "**************** RMS: ****************"
+    echo "Vs_pp  =", $&Vs_pp
+    echo "V13_pp =", $&V13_pp
+    echo "V2_pp  =", $&V2_pp
+    echo ""
+
+    let aVs_pp = {2*Vs}
+    let aV1_pp = {2*V1}
+    let aV2_pp = {2*V2}
+    echo  "Vs_pp = {2*Vs} =", $&aVs_pp
+    echo  "V1_pp = {2*V1} =", $&aV1_pp
+    echo  "V2_pp = {2*V2} =", $&aV2_pp
+    echo ""
+
+    echo "**************************************"
+    meas tran Vs_max   MAX v(1)  from='4*T' to='5*T'
+    meas tran V13_max  MAX v(13) from='4*T' to='5*T'
+    meas tran V2_max   MAX v(3)  from='4*T' to='5*T'
+    echo "**************** RMS: ****************"
+    echo "Vs_max  =", $&Vs_max
+    echo "V13_max =", $&V13_max
+    echo "V2_max  =", $&V2_max
+    echo ""
 .endc
 
 .end
