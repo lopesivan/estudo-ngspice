@@ -138,41 +138,32 @@ E13 13 0  1 3  1
     echo "V2_max  =", $&V2_max
     echo ""
 
-    * mede o tempo do primeiro cruzamento (trigger)
-    *meas tran t1 TRIG v(1) VAL=0 RISE=1 TARG v(1) VAL=0 RISE=1
+*   mede os instantes do período (você já tem isso):
+*   Aqui o resultado será `T_meas = t(RISE=2) – t(RISE=1)`.
+    meas tran t_meas TRIG v(1) VAL=0 RISE=1  TARG v(1) VAL=0 RISE=2
+    echo t_meas = $&t_meas
 
-    * mede o tempo do segundo cruzamento (target)
-    *meas tran t2 TRIG v(1) VAL=0 RISE=2 TARG v(1) VAL=0 RISE=2
+    meas tran t_meas TRIG v(1) VAL=0 RISE=3  TARG v(1) VAL=0 RISE=4
+    echo t_meas = $&t_meas
 
-    * mede o período
-    *meas tran T_meas TRIG v(1) VAL=0 RISE=1 TARG v(1) VAL=0 RISE=2    plot v(1)
+*   Aqui o resultado será `T_meas = t(RISE=2) – t(RISE=1)`.
+    meas tran t1 WHEN v(1)=0 RISE=1
+    meas tran t2 WHEN v(1)=0 RISE=2
 
-*    echo "t1      =", $&t1
-*    echo "t2      =", $&t2
-*    echo "T_meas  =", $&T_meas
-*    echo ""
+    echo t1 = $&t1
+    echo t2 = $&t2
+    let dt  = {t2-t1}
+    echo dt = $&dt
 
-*     mede os instantes do período (você já tem isso):
-    meas tran t1 TRIG v(1) VAL=0 RISE=1 TARG v(1) VAL=0 RISE=1
-    meas tran t2 TRIG v(1) VAL=0 RISE=2 TARG v(1) VAL=0 RISE=2
+	let dt   = minimum(vecd(time))
+	let eps  = 3*dt               ; largura temporal muito pequena
+	let ymin = minimum(v(1))
+	let ymax = maximum(v(1))
 
-*     >>> IMPORTANTE: .meas não vira vetor plotável automaticamente.
-*     Copie os valores impressos para t1 e t2 nas duas linhas abaixo:
-*    let t1 = <cole_aqui_o_valor_de_t1>
-*    let t2 = <cole_aqui_o_valor_de_t2>
-
-*     largura do "pico" ≈ poucas amostras
-    let dt = minimum(vecd(time))
-    let w  = 5*dt
-
-*     altura do marcador
-    let ymax  = maximum(v(1))
-
-*     marcadores "agulha" em t1 e t2
-*   let mark1 = (abs(time - t1) < w) ? ymax : 0
-*   let mark2 = (abs(time - t2) < w) ? ymax : 0
-*
-*    plot v(1) mark1 mark2
+    echo dt   = $&dt
+    echo eps  = $&eps
+	echo ymin = $&ymin
+	echo ymax = $&ymax
 
 .endc
 
