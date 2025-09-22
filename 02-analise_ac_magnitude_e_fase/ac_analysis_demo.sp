@@ -1,0 +1,20 @@
+* AC test
+Iin 1 0 AC 1
+R1  1 2 100
+L1  2 0 1
+
+.control
+    AC LIN 101 10 10K
+    * plot v(2)               $ real part !
+    * plot mag(v(2))          $ magnitude
+    * plot db(v(2))           $ same as vdb(2)
+    * plot imag(v(2))         $ imaginary part of v(2)
+    * plot real(v(2))         $ same as plot v(2)
+    * plot phase(v(2))        $ phase in rad
+    * plot cph(v(2))          $ phase in rad, continuous beyond pi
+
+    set units = degrees
+    *plot phase(v(2))        $ phase in degrees
+    print phase(v(2))        $ phase in degrees
+.endc
+.end
