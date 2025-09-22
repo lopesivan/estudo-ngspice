@@ -1,0 +1,31 @@
+Porque você mediu a **diferença entre dois eventos iguais**.
+
+No `.meas` com `TRIG … RISE=1` e `TARG … RISE=1`, o ngspice calcula o **tempo entre o alvo e o gatilho**. Como você escolheu o **mesmo** cruzamento (primeira subida) para ambos, a diferença é zero. É por isso que ele imprime `t1 = 0` e mostra, ao lado, que o gatilho e o alvo caíram no mesmo instante (`trig = targ = 1/60 s`). O mesmo vale para `t2` (você usou `RISE=2` nas duas metades), então também dá zero. Essa é exatamente a semântica do modo TRIG/TARG: medir o intervalo entre dois eventos que você especifica. ([Nevo Magnezi][1])
+
+Como fazer do jeito certo:
+
+* Para o **período**, use eventos **diferentes**:
+
+  ```spice
+  .meas tran T_meas TRIG v(1) VAL=0 RISE=1  TARG v(1) VAL=0 RISE=2
+  ```
+
+  Aqui o resultado será `T_meas = t(RISE=2) – t(RISE=1)`. ([Nevo Magnezi][1])
+
+* Para obter os **tempos absolutos** de cada cruzamento (e não a diferença), meça o instante do evento com `WHEN`:
+
+  ```spice
+  .meas tran t1 WHEN v(1)=0 RISE=1
+  .meas tran t2 WHEN v(1)=0 RISE=2
+  ```
+
+  O manual mostra o uso de `WHEN` para “pegar o tempo em que a condição é verdadeira”. ([Nevo Magnezi][2])
+
+Observação: aquela listagem com todas as tensões = 0 é só a **solução transiente inicial** (t=0). Depois do `run`, a forma de onda evolui normalmente; os tempos de `trig`/`targ` exibidos pelo `.meas` confirmam que o cruzamento ocorreu em 16,666… ms e 33,333… ms (60 Hz). Isso é esperado. ([ftp.riken.jp][3])
+
+Se quiser, te devolvo um bloco `.control` pronto que imprime `t1`, `t2`, `T_meas` e ainda gera o gráfico marcando visualmente os dois instantes.
+
+[1]: https://nmg.gitlab.io/ngspice-manual/analysesandoutputcontrol_batchmode/measurementsafterac%2Cdcandtransientanalysis/trigtarg.html?utm_source=chatgpt.com "Trig Targ -"
+[2]: https://nmg.gitlab.io/ngspice-manual/analysesandoutputcontrol_batchmode/measurementsafterac%2Cdcandtransientanalysis/moreexamples.html?utm_source=chatgpt.com "More examples -"
+[3]: https://ftp.riken.jp/Linux/gentoo/distfiles/d4/ngspice-43-manual.pdf?utm_source=chatgpt.com "ngspice user manual"
+
